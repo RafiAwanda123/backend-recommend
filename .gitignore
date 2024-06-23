@@ -1,0 +1,7 @@
+config/serviceAccountKey.json
+
+Dockerfile
+
+.env
+
+node_modules

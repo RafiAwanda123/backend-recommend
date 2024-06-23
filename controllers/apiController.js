@@ -337,116 +337,116 @@ const getNearbyDestinations = async (req, res) => {
     }
 };
 
-// const addBookmark = async (req, res) => {
-//     const userId = req.user && req.user.id; 
-//     const destinationId = req.body.destination_id;
+const addBookmark = async (req, res) => {
+    const userId = req.user && req.user.id; 
+    const destinationId = req.body.destination_id;
 
-//     if (!userId) {
-//         return res.status(401).json({
-//             error: true,
-//             message: "Unauthorized"
-//         });
-//     }
+    if (!userId) {
+        return res.status(401).json({
+            error: true,
+            message: "Unauthorized"
+        });
+    }
 
-//     if (!destinationId) {
-//         return res.status(400).json({
-//             error: true,
-//             message: "Destination ID is required"
-//         });
-//     }
+    if (!destinationId) {
+        return res.status(400).json({
+            error: true,
+            message: "Destination ID is required"
+        });
+    }
 
-//     try {
-//         const userRef = firestore.collection('users').doc(userId);
-//         const bookmarkRef = userRef.collection('bookmarks').doc(destinationId);
+    try {
+        const userRef = firestore.collection('users').doc(userId);
+        const bookmarkRef = userRef.collection('bookmarks').doc(destinationId);
 
-//         // Cek apakah destinasi sudah ada di bookmark
-//         const bookmarkDoc = await bookmarkRef.get();
-//         if (bookmarkDoc.exists) {
-//             return res.status(400).json({
-//                 error: true,
-//                 message: "Destination already bookmarked"
-//             });
-//         }
+        // Cek apakah destinasi sudah ada di bookmark
+        const bookmarkDoc = await bookmarkRef.get();
+        if (bookmarkDoc.exists) {
+            return res.status(400).json({
+                error: true,
+                message: "Destination already bookmarked"
+            });
+        }
 
-//         // Ambil data destinasi dari Firestore
-//         const destinationDocRef = firestore.collection('destinations').doc(destinationId);
-//         const destinationDoc = await destinationDocRef.get();
+        // Ambil data destinasi dari Firestore
+        const destinationDocRef = firestore.collection('destinations').doc(destinationId);
+        const destinationDoc = await destinationDocRef.get();
 
-//         if (!destinationDoc.exists) {
-//             return res.status(404).json({
-//                 error: true,
-//                 message: "Destination not found"
-//             });
-//         }
+        if (!destinationDoc.exists) {
+            return res.status(404).json({
+                error: true,
+                message: "Destination not found"
+            });
+        }
 
-//         const destinationData = destinationDoc.data();
+        const destinationData = destinationDoc.data();
 
-//         // Simpan destinasi ke bookmark pengguna
-//         await bookmarkRef.set({
-//             ...destinationData,
-//             bookmarkedAt: new Date().toISOString()
-//         });
+        // Simpan destinasi ke bookmark pengguna
+        await bookmarkRef.set({
+            ...destinationData,
+            bookmarkedAt: new Date().toISOString()
+        });
 
-//         return res.status(201).json({
-//             error: false,
-//             message: "Destination bookmarked successfully"
-//         });
-//     } catch (error) {
-//         console.error("Error adding bookmark:", error);
-//         return res.status(500).json({
-//             error: true,
-//             message: "Failed to add bookmark"
-//         });
-//     }
-// };
+        return res.status(201).json({
+            error: false,
+            message: "Destination bookmarked successfully"
+        });
+    } catch (error) {
+        console.error("Error adding bookmark:", error);
+        return res.status(500).json({
+            error: true,
+            message: "Failed to add bookmark"
+        });
+    }
+};
 
 
-// const removeBookmark = async (req, res) => {
-//     const userId = req.user && req.user.uid; // Pastikan Anda memiliki userId dari autentikasi
-//     const destinationId = req.body.destination_id;
+const removeBookmark = async (req, res) => {
+    const userId = req.user && req.user.uid; // Pastikan Anda memiliki userId dari autentikasi
+    const destinationId = req.body.destination_id;
 
-//     if (!userId) {
-//         return res.status(401).json({
-//             error: true,
-//             message: "Unauthorized"
-//         });
-//     }
+    if (!userId) {
+        return res.status(401).json({
+            error: true,
+            message: "Unauthorized"
+        });
+    }
 
-//     if (!destinationId) {
-//         return res.status(400).json({
-//             error: true,
-//             message: "Destination ID is required"
-//         });
-//     }
+    if (!destinationId) {
+        return res.status(400).json({
+            error: true,
+            message: "Destination ID is required"
+        });
+    }
 
-//     try {
-//         const userRef = firestore.collection('users').doc(userId);
-//         const bookmarkRef = userRef.collection('bookmarks').doc(destinationId);
+    try {
+        const userRef = firestore.collection('users').doc(userId);
+        const bookmarkRef = userRef.collection('bookmarks').doc(destinationId);
 
-//         // Cek apakah destinasi ada di bookmark
-//         const bookmarkDoc = await bookmarkRef.get();
-//         if (!bookmarkDoc.exists) {
-//             return res.status(404).json({
-//                 error: true,
-//                 message: "Destination not bookmarked"
-//             });
-//         }
+        // Cek apakah destinasi ada di bookmark
+        const bookmarkDoc = await bookmarkRef.get();
+        if (!bookmarkDoc.exists) {
+            return res.status(404).json({
+                error: true,
+                message: "Destination not bookmarked"
+            });
+        }
 
-//         // Hapus destinasi dari bookmark
-//         await bookmarkRef.delete();
+        // Hapus destinasi dari bookmark
+        await bookmarkRef.delete();
 
-//         return res.status(200).json({
-//             error: false,
-//             message: "Destination removed from bookmarks successfully"
-//         });
-//     } catch (error) {
-//         console.error("Error removing bookmark:", error);
-//         return res.status(500).json({
-//             error: true,
-//             message: "Failed to remove bookmark"
-//         });
-//     }
-// };
+        return res.status(200).json({
+            error: false,
+            message: "Destination removed from bookmarks successfully"
+        });
+    } catch (error) {
+        console.error("Error removing bookmark:", error);
+        return res.status(500).json({
+            error: true,
+            message: "Failed to remove bookmark"
+        });
+    }
+};
 
 module.exports = {
     getDestinationByCoordinates,
@@ -454,7 +454,7 @@ module.exports = {
     addReview,
     importDestinations,
     getNearbyDestinations,
-    // removeBookmark,
-    // addBookmark
+    removeBookmark,
+    addBookmark
 };
     
